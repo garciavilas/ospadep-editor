@@ -2,7 +2,7 @@
 
 Herramienta web para que equipos no técnicos puedan producir imágenes de comunicación respetando el Manual de Marca v3, el Manual de Usos en Redes y el Blueprint Web de OSPADEP Salud.
 
-**URL pública:** https://garciavilas.github.io/ospadep-editor/
+**URL pública:** https://editor.ospadepsalud.ar
 
 ---
 
@@ -84,12 +84,24 @@ Los tres archivos son:
 
 Para agregar un nuevo color a un registro, editar el objeto `REGISTERS` en `editor.js`. Para cambiar tamaños de tipografía, buscar las variables `tagSize`, `hlSize`, `bdSize` en la función `drawText`.
 
-Cualquier cambio pusheado a la rama `main` se publica automáticamente en GitHub Pages en 1-2 minutos.
+Cualquier cambio pusheado a la rama `main` se publica automáticamente en Netlify en 1-2 minutos.
+
+---
+
+## Infraestructura y deploy
+
+- **Repositorio:** `garciavilas/ospadep-editor` (público en GitHub)
+- **Hosting:** Netlify — conectado a la rama `main`, deploy automático en cada push
+- **Dominio:** `editor.ospadepsalud.ar` (subdominio del dominio principal de OSPADEP)
+- **DNS:** gestionado por Netlify DNS (nameservers `dns1-4.p08.nsone.net`)
+- **SSL:** certificado automático por Let's Encrypt vía Netlify
+
+El dominio `ospadepsalud.ar` está registrado en NIC Argentina y delegado a los nameservers de Netlify, que manejan todos los subdominios desde ahí.
 
 ---
 
 ## Tecnología
 
-HTML + CSS + JavaScript puro. Sin frameworks, sin dependencias, sin build. Funciona offline una vez cargada la página. Alojado en GitHub Pages.
+HTML + CSS + JavaScript puro. Sin frameworks, sin dependencias, sin build. Funciona offline una vez cargada la página.
 
 Construido en julio de 2026 por Claude (Anthropic) en colaboración con el equipo de OSPADEP.
