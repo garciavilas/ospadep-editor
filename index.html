@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OSPADEP — Editor de imágenes de marca</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;700;900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="app-logo">OSPA<span class="logo-d">D</span>EP <span class="logo-salud">Salud</span></div>
+    <div class="app-subtitle">Editor de imágenes de marca</div>
+  </header>
+
+  <div class="editor-layout">
+
+    <!-- ========= SIDEBAR DE CONTROLES ========= -->
+    <aside class="controls">
+
+      <!-- 1. FOTO -->
+      <div class="ctrl-group">
+        <div class="ctrl-label">1 · Foto</div>
+        <div class="upload-zone" id="uploadZone">
+          <input type="file" id="fileInput" accept="image/*">
+          <div class="upload-icon">↑</div>
+          <div class="upload-text">Arrastrá una foto<br>o hacé clic para elegir</div>
+        </div>
+        <button class="btn-ghost" id="clearPhotoBtn" style="display:none">✕ Quitar foto</button>
+
+        <!-- Controles de encuadre (aparecen al cargar foto) -->
+        <div id="photoControls" style="display:none" class="sub-controls">
+          <div class="drag-hint">↔ Arrastrá sobre la imagen para reencuadrar</div>
+          <div class="range-wrap">
+            <label>Zoom <span id="zoomVal">100%</span></label>
+            <input type="range" id="zoomRange" min="100" max="300" value="100">
+          </div>
+          <button class="btn-ghost" id="resetCropBtn">↺ Centrar</button>
+        </div>
+      </div>
+
+      <!-- 2. FORMATO -->
+      <div class="ctrl-group">
+        <div class="ctrl-label">2 · Formato de salida</div>
+        <div class="btn-row">
+          <button class="fmt-btn active" data-fmt="square">1:1<br><span>1080×1080</span></button>
+          <button class="fmt-btn" data-fmt="portrait">4:5<br><span>1080×1350</span></button>
+          <button class="fmt-btn" data-fmt="story">9:16<br><span>1080×1920</span></button>
+        </div>
+      </div>
+
+      <!-- 3. REGISTRO -->
+      <div class="ctrl-group">
+        <div class="ctrl-label">3 · Registro de comunicación</div>
+        <div class="register-info" id="registerInfo"></div>
+        <div class="btn-row">
+          <button class="reg-btn active" data-reg="institucional">Institucional</button>
+          <button class="reg-btn" data-reg="marketing">Marketing</button>
+          <button class="reg-btn" data-reg="promociones">Promociones</button>
+        </div>
+      </div>
+
+      <!-- 4. COLOR E INTERVENCIÓN -->
+      <div class="ctrl-group">
+        <div class="ctrl-label">4 · Color de intervención</div>
+        <div class="swatches" id="colorSwatches"></div>
+
+        <div class="ctrl-label" style="margin-top:14px">Tipo de intervención</div>
+        <div class="radio-group">
+          <label><input type="radio" name="interv" value="none"> Sin intervención</label>
+          <label><input type="radio" name="interv" value="duotone" checked> Duotono</label>
+          <label><input type="radio" name="interv" value="dbox"> Caja D (recorte)</label>
+          <label><input type="radio" name="interv" value="both"> Duotono + Caja D</label>
+        </div>
+
+        <div class="range-wrap" id="intensityWrap">
+          <label>Intensidad <span id="intensityVal">55%</span></label>
+          <input type="range" id="intensityRange" min="5" max="90" value="55">
+        </div>
+      </div>
+
+      <!-- 5. FONDO (cuando no hay foto o fuera del recorte D) -->
+      <div class="ctrl-group">
+        <div class="ctrl-label">5 · Color de fondo</div>
+        <div class="swatches" id="bgSwatches"></div>
+      </div>
+
+      <!-- 6. TEXTO -->
+      <div class="ctrl-group">
+        <div class="ctrl-label">6 · Texto</div>
+
+        <div class="ctrl-label small">Color del texto</div>
+        <div class="swatches" id="textColorSwatches"></div>
+
+        <label class="field-label">Etiqueta <span class="field-hint">Raleway · letras chicas · mayúsculas</span></label>
+        <input type="text" id="tagInput" class="text-input" placeholder="Plan OS300 · Oferta especial" maxlength="60">
+
+        <label class="field-label">Titular <span class="field-hint">Raleway Black · grande</span></label>
+        <textarea id="headlineInput" class="text-input" rows="3" placeholder="Tu salud vuela con vos."></textarea>
+
+        <label class="field-label">Cuerpo <span class="field-hint">Poppins · opcional</span></label>
+        <textarea id="bodyInput" class="text-input" rows="2" placeholder="Cobertura completa para vos y tu familia."></textarea>
+
+        <div class="ctrl-label" style="margin-top:10px">Posición del texto</div>
+        <div class="radio-group">
+          <label><input type="radio" name="textpos" value="bottom-left" checked> Abajo izquierda</label>
+          <label><input type="radio" name="textpos" value="center"> Centrado</label>
+          <label><input type="radio" name="textpos" value="top-left"> Arriba izquierda</label>
+        </div>
+      </div>
+
+      <!-- 7. ELEMENTOS DE MARCA -->
+      <div class="ctrl-group">
+        <div class="ctrl-label">7 · Elementos de marca</div>
+        <div class="check-group">
+          <label><input type="checkbox" id="chkLogo" checked> Logo OSPADEP</label>
+          <label><input type="checkbox" id="chkDOutline"> Contorno D (watermark)</label>
+          <label><input type="checkbox" id="chkDots"> Grilla de puntos</label>
+          <label><input type="checkbox" id="chkChevron"> Doble chevron</label>
+        </div>
+
+        <!-- Controles de la D (aparecen al activar el contorno D) -->
+        <div id="dControls" style="display:none" class="sub-controls">
+          <div class="drag-hint">Ajustá posición y tamaño de la D</div>
+          <div class="range-wrap">
+            <label>Posición horizontal <span id="dXVal">65%</span></label>
+            <input type="range" id="dXRange" min="0" max="100" value="65">
+          </div>
+          <div class="range-wrap">
+            <label>Posición vertical <span id="dYVal">50%</span></label>
+            <input type="range" id="dYRange" min="0" max="100" value="50">
+          </div>
+          <div class="range-wrap">
+            <label>Tamaño <span id="dSizeVal">82%</span></label>
+            <input type="range" id="dSizeRange" min="20" max="150" value="82">
+          </div>
+          <div class="range-wrap">
+            <label>Opacidad <span id="dOpacityVal">6%</span></label>
+            <input type="range" id="dOpacityRange" min="1" max="40" value="6">
+          </div>
+        </div>
+      </div>
+
+      <!-- EXPORT -->
+      <button class="export-btn" id="exportBtn">↓ Descargar PNG</button>
+      <div class="export-hint" id="exportHint"></div>
+
+    </aside>
+
+    <!-- ========= AREA DE PREVIEW ========= -->
+    <main class="preview-area">
+      <div class="canvas-wrap" id="canvasWrap">
+        <canvas id="canvas"></canvas>
+      </div>
+      <div class="preview-meta">
+        Vista previa · <span id="dimsLabel">1080 × 1080 px</span>
+        <span class="preview-register" id="previewRegister"></span>
+      </div>
+    </main>
+
+  </div>
+
+  <script src="editor.js"></script>
+</body>
+</html>
